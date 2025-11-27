@@ -15,7 +15,7 @@
     "test": "turbo run test",
     "dev:frontend": "npm run dev --workspace=apps/frontend",
     "dev:backend": "npm run dev --workspace=apps/backend",
-    "build:frontend": "npm run build --workspace=apps/frontend",
+    "build:frontend": "turbo run build --filter=apps-frontend",
     "build:backend": "npm run build --workspace=apps/backend"
   },
   "devDependencies": {
