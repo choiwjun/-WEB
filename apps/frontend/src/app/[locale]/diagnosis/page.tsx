@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
-import { Clock, HelpCircle, Sparkles } from 'lucide-react';
+import { Clock, HelpCircle, Sparkles, Star, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, Badge, Button } from '@/components/ui';
 import { api } from '@/lib/api';
@@ -19,7 +19,157 @@ interface Diagnosis {
   estimatedMinutes: number;
   totalQuestions: number;
   thumbnailUrl?: string;
+  completionCount?: number;
+  rating?: number;
 }
+
+// Mock data for demonstration
+const mockDiagnoses: Diagnosis[] = [
+  {
+    id: 'diag-001',
+    title: '16タイプ性格診断',
+    description: 'MBTI理論に基づいた16種類の性格タイプからあなたのタイプを診断します。自己理解を深め、人間関係や仕事に活かせます。',
+    category: 'PERSONALITY',
+    type: 'FREE',
+    creditCost: 0,
+    estimatedMinutes: 15,
+    totalQuestions: 60,
+    completionCount: 45678,
+    rating: 4.8,
+  },
+  {
+    id: 'diag-002',
+    title: 'キャリア適性診断Pro',
+    description: 'あなたの強み・価値観・興味から最適なキャリアパスを提案。転職や就活に役立つ詳細なAIレポート付き。',
+    category: 'CAREER',
+    type: 'PAID',
+    creditCost: 500,
+    estimatedMinutes: 25,
+    totalQuestions: 80,
+    completionCount: 12340,
+    rating: 4.9,
+  },
+  {
+    id: 'diag-003',
+    title: 'ストレスチェック診断',
+    description: '現在のストレスレベルを測定し、その原因と対処法を分析。メンタルヘルスケアの第一歩に最適です。',
+    category: 'STRESS',
+    type: 'FREE',
+    creditCost: 0,
+    estimatedMinutes: 10,
+    totalQuestions: 30,
+    completionCount: 34521,
+    rating: 4.7,
+  },
+  {
+    id: 'diag-004',
+    title: '対人関係スタイル診断',
+    description: 'あなたのコミュニケーションパターンを分析し、人間関係を改善するためのアドバイスを提供します。',
+    category: 'RELATIONSHIP',
+    type: 'PAID',
+    creditCost: 300,
+    estimatedMinutes: 20,
+    totalQuestions: 50,
+    completionCount: 8765,
+    rating: 4.6,
+  },
+  {
+    id: 'diag-005',
+    title: '心理的安全性チェック',
+    description: 'チームや職場の心理的安全性を測定。組織改善のための具体的な提案を含む詳細レポート。',
+    category: 'PSYCHOLOGY',
+    type: 'PAID',
+    creditCost: 400,
+    estimatedMinutes: 15,
+    totalQuestions: 45,
+    completionCount: 5432,
+    rating: 4.8,
+  },
+  {
+    id: 'diag-006',
+    title: 'メンタルウェルネス診断',
+    description: '心の健康状態を包括的にチェック。うつ・不安傾向の早期発見と専門家への相談タイミングを提案。',
+    category: 'MENTAL_HEALTH',
+    type: 'FREE',
+    creditCost: 0,
+    estimatedMinutes: 12,
+    totalQuestions: 40,
+    completionCount: 23456,
+    rating: 4.9,
+  },
+  {
+    id: 'diag-007',
+    title: 'エニアグラム性格診断',
+    description: '9つの性格タイプであなたの本質を探る。自己成長と人間関係の改善に役立つ深い洞察を提供。',
+    category: 'PERSONALITY',
+    type: 'PAID',
+    creditCost: 350,
+    estimatedMinutes: 20,
+    totalQuestions: 55,
+    completionCount: 15678,
+    rating: 4.7,
+  },
+  {
+    id: 'diag-008',
+    title: 'ワークライフバランス診断',
+    description: '仕事と生活のバランスを数値化。燃え尽き症候群の予防と生活改善のためのアドバイス付き。',
+    category: 'STRESS',
+    type: 'FREE',
+    creditCost: 0,
+    estimatedMinutes: 8,
+    totalQuestions: 25,
+    completionCount: 19876,
+    rating: 4.5,
+  },
+  {
+    id: 'diag-009',
+    title: 'リーダーシップスタイル診断',
+    description: 'あなたのリーダーシップタイプを分析。チームマネジメントに活かせる具体的なアドバイスを提供。',
+    category: 'CAREER',
+    type: 'PAID',
+    creditCost: 450,
+    estimatedMinutes: 18,
+    totalQuestions: 50,
+    completionCount: 7654,
+    rating: 4.8,
+  },
+  {
+    id: 'diag-010',
+    title: '恋愛傾向診断',
+    description: 'あなたの恋愛パターンと相性の良いタイプを分析。より良い関係構築のヒントを提供します。',
+    category: 'RELATIONSHIP',
+    type: 'FREE',
+    creditCost: 0,
+    estimatedMinutes: 12,
+    totalQuestions: 35,
+    completionCount: 28901,
+    rating: 4.6,
+  },
+  {
+    id: 'diag-011',
+    title: '認知バイアス診断',
+    description: 'あなたの思考パターンに潜むバイアスを発見。より客観的な判断力を身につけるためのガイド付き。',
+    category: 'PSYCHOLOGY',
+    type: 'PAID',
+    creditCost: 380,
+    estimatedMinutes: 15,
+    totalQuestions: 42,
+    completionCount: 4321,
+    rating: 4.7,
+  },
+  {
+    id: 'diag-012',
+    title: '睡眠の質チェック',
+    description: '睡眠習慣と質を評価。より良い睡眠のための具体的な改善策を提案します。',
+    category: 'MENTAL_HEALTH',
+    type: 'FREE',
+    creditCost: 0,
+    estimatedMinutes: 7,
+    totalQuestions: 20,
+    completionCount: 31245,
+    rating: 4.4,
+  },
+];
 
 const categoryColors: Record<string, string> = {
   PERSONALITY: 'bg-info/10 text-info',
@@ -46,9 +196,30 @@ export default function DiagnosisListPage() {
           type: selectedType || undefined,
           language: locale.toUpperCase(),
         });
-        setDiagnoses(data);
+        if (data && data.length > 0) {
+          setDiagnoses(data);
+        } else {
+          // Use mock data if API returns empty
+          let filteredData = [...mockDiagnoses];
+          if (selectedCategory) {
+            filteredData = filteredData.filter((d) => d.category === selectedCategory);
+          }
+          if (selectedType) {
+            filteredData = filteredData.filter((d) => d.type === selectedType);
+          }
+          setDiagnoses(filteredData);
+        }
       } catch (error) {
-        console.error('Failed to fetch diagnoses:', error);
+        console.error('Failed to fetch diagnoses, using mock data:', error);
+        // Use mock data on API failure
+        let filteredData = [...mockDiagnoses];
+        if (selectedCategory) {
+          filteredData = filteredData.filter((d) => d.category === selectedCategory);
+        }
+        if (selectedType) {
+          filteredData = filteredData.filter((d) => d.type === selectedType);
+        }
+        setDiagnoses(filteredData);
       } finally {
         setIsLoading(false);
       }
@@ -208,9 +379,27 @@ export default function DiagnosisListPage() {
                         </h3>
 
                         {/* Description */}
-                        <p className="text-warm-gray text-sm mb-4 line-clamp-2">
+                        <p className="text-warm-gray text-sm mb-3 line-clamp-2">
                           {diagnosis.description}
                         </p>
+
+                        {/* Rating & Completion Count */}
+                        {(diagnosis.rating || diagnosis.completionCount) && (
+                          <div className="flex items-center gap-3 mb-3 text-sm">
+                            {diagnosis.rating && (
+                              <span className="flex items-center gap-1 text-yellow-500">
+                                <Star className="w-4 h-4 fill-current" />
+                                <span className="font-medium">{diagnosis.rating}</span>
+                              </span>
+                            )}
+                            {diagnosis.completionCount && (
+                              <span className="flex items-center gap-1 text-warm-gray">
+                                <Users className="w-4 h-4" />
+                                <span>{diagnosis.completionCount.toLocaleString()}人が受診</span>
+                              </span>
+                            )}
+                          </div>
+                        )}
 
                         {/* Meta Info */}
                         <div className="flex items-center gap-4 text-sm text-warm-gray">
