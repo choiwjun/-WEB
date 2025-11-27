@@ -102,7 +102,8 @@ export const hasPermission = (
   userRole: keyof typeof ROLE_PERMISSIONS,
   permission: Permission
 ): boolean => {
-  return ROLE_PERMISSIONS[userRole]?.includes(permission) ?? false;
+  const permissions = ROLE_PERMISSIONS[userRole] as readonly string[];
+  return permissions?.includes(permission) ?? false;
 };
 
 export const hasMinimumRole = (
