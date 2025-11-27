@@ -31,7 +31,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     // Create user
-    const user = await this.usersService.create({
+    const user = await this.usersService.createUser({
       email: registerDto.email,
       password: hashedPassword,
       name: registerDto.name,
@@ -133,7 +133,7 @@ export class AuthService {
     let user = await this.usersService.findByEmail(profile.email);
 
     if (!user) {
-      user = await this.usersService.create({
+      user = await this.usersService.createUser({
         email: profile.email,
         name: profile.name || profile.email.split('@')[0],
         avatar: profile.avatar,

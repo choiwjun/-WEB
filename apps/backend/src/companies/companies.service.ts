@@ -12,7 +12,7 @@ export class CompaniesService {
     phone?: string;
     plan?: CompanyPlan;
     maxUsers?: number;
-  }) {
+  }): Promise<any> {
     const code = this.generateCompanyCode();
 
     // Check if code exists
@@ -31,7 +31,7 @@ export class CompaniesService {
         name: data.name,
         email: data.email,
         phone: data.phone,
-        plan: data.plan || CompanyPlan.TRIAL,
+        plan: data.plan || CompanyPlan.FREE,
         maxUsers: data.maxUsers || 10,
         status: CompanyStatus.TRIAL,
       },

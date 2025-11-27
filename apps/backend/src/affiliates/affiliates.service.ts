@@ -123,7 +123,7 @@ export class AffiliatesService {
       throw new BadRequestException('最低出金額は5,000円です');
     }
 
-    const payout = await this.prisma.affilaitePayout.create({
+    const payout = await this.prisma.affiliatePayout.create({
       data: {
         affiliateId: affiliate.id,
         amount,
@@ -154,7 +154,7 @@ export class AffiliatesService {
       throw new NotFoundException('アフィリエイト情報が見つかりません');
     }
 
-    return this.prisma.affilaitePayout.findMany({
+    return this.prisma.affiliatePayout.findMany({
       where: { affiliateId: affiliate.id },
       skip,
       take,

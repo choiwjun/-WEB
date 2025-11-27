@@ -39,7 +39,11 @@ export class UsersController {
     @CurrentUser('id') userId: string,
     @Body() updateProfileDto: UpdateProfileDto,
   ) {
-    return this.usersService.updateProfile(userId, updateProfileDto);
+    const { birthDate, ...rest } = updateProfileDto;
+    return this.usersService.updateProfile(userId, {
+      ...rest,
+      birthDate: birthDate ? new Date(birthDate) : undefined,
+    });
   }
 
   @Get()

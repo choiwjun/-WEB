@@ -1,11 +1,51 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, User } from '@prisma/client';
+import { Prisma, User, UserRole, AuthProvider, Language } from '@prisma/client';
+
+// Custom type for creating user with companyCode as string
+interface CreateUserInput {
+  email: string;
+  password?: string;
+  name: string;
+  companyCode?: string;
+  language?: Language;
+  role?: UserRole;
+  authProvider?: AuthProvider;
+  avatar?: string;
+  isEmailVerified?: boolean;
+}
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
+  // Create user with proper company relation handling
+  async createUser(data: CreateUserInput): Promise<User> {
+    const { companyCode, ...userData } = data;
+    
+    return this.prisma.user.create({
+      data: {
+        ...userData,
+        language: data.language || Language.JA,
+        role: data.role || UserRole.USER,
+        authProvider: data.authProvider || AuthProvider.EMAIL,
+        ...(companyCode && {
+          company: {
+            connect: { code: companyCode },
+          },
+        }),
+        creditBalance: {
+          create: {
+            balance: 0,
+            totalEarned: 0,
+            totalSpent: 0,
+          },
+        },
+      },
+    });
+  }
+
+  // Legacy create method for Prisma.UserCreateInput
   async create(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
       data: {
