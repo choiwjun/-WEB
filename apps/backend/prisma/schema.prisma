@@ -1,0 +1,779 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ========================
+// User & Authentication
+// ========================
+
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  password        String?
+  name            String
+  nickname        String?
+  avatar          String?
+  role            UserRole  @default(USER)
+  authProvider    AuthProvider @default(EMAIL)
+  companyCode     String?
+  language        Language  @default(JA)
+  isEmailVerified Boolean   @default(false)
+  isActive        Boolean   @default(true)
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  profile         UserProfile?
+  preferences     UserPreferences?
+  company         Company?          @relation(fields: [companyCode], references: [code])
+  diagnosisSessions DiagnosisSession[]
+  diagnosisResults  DiagnosisResult[]
+  chatRoomsAsUser   ChatRoom[]        @relation("UserChats")
+  counselorProfile  Counselor?
+  messages         ChatMessage[]
+  payments         Payment[]
+  creditBalance    CreditBalance?
+  creditTransactions CreditTransaction[]
+  affiliate        Affiliate?
+  aiReports        AIReport[]
+  companyAdmins    CompanyAdmin[]
+
+  @@index([email])
+  @@index([companyCode])
+}
+
+model UserProfile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  birthDate   DateTime?
+  gender      Gender?
+  occupation  String?
+  bio         String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserPreferences {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  emailNotifications Boolean  @default(true)
+  pushNotifications  Boolean  @default(true)
+  marketingEmails    Boolean  @default(false)
+  language           Language @default(JA)
+  timezone           String   @default("Asia/Tokyo")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  USER
+  COUNSELOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum AuthProvider {
+  EMAIL
+  LINE
+  GOOGLE
+  APPLE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum Language {
+  JA
+  KO
+  EN
+}
+
+// ========================
+// Diagnosis
+// ========================
+
+model Diagnosis {
+  id               String           @id @default(uuid())
+  title            String
+  description      String
+  category         DiagnosisCategory
+  type             DiagnosisType
+  creditCost       Int              @default(0)
+  estimatedMinutes Int              @default(10)
+  totalQuestions   Int              @default(0)
+  thumbnailUrl     String?
+  isActive         Boolean          @default(true)
+  order            Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  // Relations
+  questions       DiagnosisQuestion[]
+  resultTypes     DiagnosisResultType[]
+  sessions        DiagnosisSession[]
+  translations    DiagnosisTranslation[]
+
+  @@index([category])
+  @@index([type])
+}
+
+model DiagnosisTranslation {
+  id           String   @id @default(uuid())
+  diagnosisId  String
+  language     Language
+  title        String
+  description  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  diagnosis Diagnosis @relation(fields: [diagnosisId], references: [id], onDelete: Cascade)
+
+  @@unique([diagnosisId, language])
+}
+
+model DiagnosisQuestion {
+  id           String       @id @default(uuid())
+  diagnosisId  String
+  questionText String
+  questionType QuestionType
+  order        Int          @default(0)
+  isRequired   Boolean      @default(true)
+  weight       Float        @default(1.0)
+  categoryTag  String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // Relations
+  diagnosis    Diagnosis           @relation(fields: [diagnosisId], references: [id], onDelete: Cascade)
+  options      QuestionOption[]
+  answers      DiagnosisAnswer[]
+  translations QuestionTranslation[]
+
+  @@index([diagnosisId])
+}
+
+model QuestionTranslation {
+  id          String   @id @default(uuid())
+  questionId  String
+  language    Language
+  questionText String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  question DiagnosisQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, language])
+}
+
+model QuestionOption {
+  id          String   @id @default(uuid())
+  questionId  String
+  text        String
+  score       Int      @default(0)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  question     DiagnosisQuestion     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  translations OptionTranslation[]
+
+  @@index([questionId])
+}
+
+model OptionTranslation {
+  id        String   @id @default(uuid())
+  optionId  String
+  language  Language
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  option QuestionOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@unique([optionId, language])
+}
+
+model DiagnosisResultType {
+  id               String   @id @default(uuid())
+  diagnosisId      String
+  typeName         String
+  minScore         Int
+  maxScore         Int
+  title            String
+  description      String
+  detailedAnalysis String
+  recommendations  String[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  diagnosis    Diagnosis                    @relation(fields: [diagnosisId], references: [id], onDelete: Cascade)
+  translations ResultTypeTranslation[]
+
+  @@index([diagnosisId])
+}
+
+model ResultTypeTranslation {
+  id               String   @id @default(uuid())
+  resultTypeId     String
+  language         Language
+  title            String
+  description      String
+  detailedAnalysis String
+  recommendations  String[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  resultType DiagnosisResultType @relation(fields: [resultTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([resultTypeId, language])
+}
+
+model DiagnosisSession {
+  id                   String                @id @default(uuid())
+  userId               String
+  diagnosisId          String
+  currentQuestionIndex Int                   @default(0)
+  status               DiagnosisSessionStatus @default(IN_PROGRESS)
+  startedAt            DateTime              @default(now())
+  completedAt          DateTime?
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  // Relations
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  diagnosis Diagnosis         @relation(fields: [diagnosisId], references: [id])
+  answers   DiagnosisAnswer[]
+  result    DiagnosisResult?
+
+  @@index([userId])
+  @@index([diagnosisId])
+}
+
+model DiagnosisAnswer {
+  id                String   @id @default(uuid())
+  sessionId         String
+  questionId        String
+  selectedOptionIds String[]
+  textAnswer        String?
+  scaleValue        Int?
+  createdAt         DateTime @default(now())
+
+  // Relations
+  session  DiagnosisSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question DiagnosisQuestion @relation(fields: [questionId], references: [id])
+
+  @@unique([sessionId, questionId])
+}
+
+model DiagnosisResult {
+  id                String   @id @default(uuid())
+  sessionId         String   @unique
+  userId            String
+  diagnosisId       String
+  totalScore        Int
+  categoryScores    Json
+  resultType        String
+  resultTitle       String
+  resultDescription String
+  recommendations   String[]
+  createdAt         DateTime @default(now())
+
+  // Relations
+  session   DiagnosisSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  aiReports AIReport[]
+
+  @@index([userId])
+}
+
+enum DiagnosisCategory {
+  PERSONALITY
+  PSYCHOLOGY
+  CAREER
+  RELATIONSHIP
+  STRESS
+  MENTAL_HEALTH
+}
+
+enum DiagnosisType {
+  FREE
+  PAID
+}
+
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  SCALE
+  TEXT
+}
+
+enum DiagnosisSessionStatus {
+  IN_PROGRESS
+  COMPLETED
+  ABANDONED
+}
+
+// ========================
+// Chat
+// ========================
+
+model Counselor {
+  id                 String             @id @default(uuid())
+  userId             String             @unique
+  displayName        String
+  bio                String
+  specialties        String[]
+  qualifications     String[]
+  avatar             String?
+  isAvailable        Boolean            @default(true)
+  rating             Float              @default(0)
+  totalConsultations Int                @default(0)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  // Relations
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatRooms ChatRoom[]         @relation("CounselorChats")
+  schedules CounselorSchedule[]
+}
+
+model CounselorSchedule {
+  id          String   @id @default(uuid())
+  counselorId String
+  dayOfWeek   Int
+  startTime   String
+  endTime     String
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  counselor Counselor @relation(fields: [counselorId], references: [id], onDelete: Cascade)
+
+  @@unique([counselorId, dayOfWeek])
+}
+
+model ChatRoom {
+  id                   String         @id @default(uuid())
+  userId               String
+  counselorId          String
+  status               ChatRoomStatus @default(ACTIVE)
+  lastMessageAt        DateTime?
+  lastMessagePreview   String?
+  unreadCountUser      Int            @default(0)
+  unreadCountCounselor Int            @default(0)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  // Relations
+  user      User          @relation("UserChats", fields: [userId], references: [id], onDelete: Cascade)
+  counselor Counselor     @relation("CounselorChats", fields: [counselorId], references: [id])
+  messages  ChatMessage[]
+
+  @@index([userId])
+  @@index([counselorId])
+}
+
+model ChatMessage {
+  id          String      @id @default(uuid())
+  roomId      String
+  senderId    String
+  senderType  SenderType
+  messageType MessageType @default(TEXT)
+  content     String
+  fileUrl     String?
+  fileName    String?
+  fileSize    Int?
+  isRead      Boolean     @default(false)
+  readAt      DateTime?
+  createdAt   DateTime    @default(now())
+
+  // Relations
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+  @@index([senderId])
+}
+
+enum ChatRoomStatus {
+  ACTIVE
+  CLOSED
+  ARCHIVED
+}
+
+enum SenderType {
+  USER
+  COUNSELOR
+  SYSTEM
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+}
+
+// ========================
+// Payments
+// ========================
+
+model Payment {
+  id                String         @id @default(uuid())
+  userId            String
+  provider          PaymentProvider
+  providerPaymentId String?
+  type              PaymentType
+  amount            Int
+  currency          String         @default("JPY")
+  status            PaymentStatus  @default(PENDING)
+  metadata          Json?
+  errorMessage      String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  completedAt       DateTime?
+
+  // Relations
+  user             User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  creditTransaction CreditTransaction?
+  affiliateCommission AffiliateCommission?
+
+  @@index([userId])
+  @@index([status])
+}
+
+model CreditPackage {
+  id           String   @id @default(uuid())
+  name         String
+  credits      Int
+  price        Int
+  currency     String   @default("JPY")
+  bonusCredits Int      @default(0)
+  isPopular    Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum PaymentProvider {
+  STRIPE
+  BYPAY
+}
+
+enum PaymentType {
+  CREDIT_PURCHASE
+  DIAGNOSIS_PURCHASE
+  SUBSCRIPTION
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+// ========================
+// Credits
+// ========================
+
+model CreditBalance {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  balance       Int      @default(0)
+  totalEarned   Int      @default(0)
+  totalSpent    Int      @default(0)
+  lastUpdatedAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CreditTransaction {
+  id                String                @id @default(uuid())
+  userId            String
+  type              CreditTransactionType
+  amount            Int
+  balanceAfter      Int
+  description       String
+  relatedEntityId   String?
+  relatedEntityType String?
+  paymentId         String?               @unique
+  createdAt         DateTime              @default(now())
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment? @relation(fields: [paymentId], references: [id])
+
+  @@index([userId])
+  @@index([type])
+}
+
+enum CreditTransactionType {
+  PURCHASE
+  BONUS
+  DIAGNOSIS_USE
+  CHAT_USE
+  REFUND
+  ADMIN_ADJUSTMENT
+  AFFILIATE_REWARD
+  EXPIRATION
+}
+
+// ========================
+// Affiliates
+// ========================
+
+model Affiliate {
+  id              String          @id @default(uuid())
+  userId          String          @unique
+  referralCode    String          @unique
+  status          AffiliateStatus @default(ACTIVE)
+  commissionRate  Float           @default(0.1)
+  totalReferrals  Int             @default(0)
+  totalEarnings   Int             @default(0)
+  pendingEarnings Int             @default(0)
+  paidEarnings    Int             @default(0)
+  payoutMethod    PayoutMethod?
+  payoutDetails   Json?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  // Relations
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referrals   AffiliateReferral[]
+  commissions AffiliateCommission[]
+  payouts     AffiliatePayout[]
+
+  @@index([referralCode])
+}
+
+model AffiliateReferral {
+  id             String    @id @default(uuid())
+  affiliateId    String
+  referredUserId String    @unique
+  referralDate   DateTime  @default(now())
+  convertedAt    DateTime?
+  totalPurchases Int       @default(0)
+  totalCommission Int      @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  affiliate   Affiliate             @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  commissions AffiliateCommission[]
+
+  @@index([affiliateId])
+}
+
+model AffiliateCommission {
+  id               String       @id @default(uuid())
+  affiliateId      String
+  referralId       String
+  paymentId        String       @unique
+  amount           Int
+  commissionRate   Float
+  commissionAmount Int
+  status           PayoutStatus @default(PENDING)
+  paidAt           DateTime?
+  createdAt        DateTime     @default(now())
+
+  // Relations
+  affiliate Affiliate         @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  referral  AffiliateReferral @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  payment   Payment           @relation(fields: [paymentId], references: [id])
+
+  @@index([affiliateId])
+  @@index([status])
+}
+
+model AffiliatePayout {
+  id            String       @id @default(uuid())
+  affiliateId   String
+  amount        Int
+  currency      String       @default("JPY")
+  method        PayoutMethod
+  status        PayoutStatus @default(PENDING)
+  transactionId String?
+  processedAt   DateTime?
+  errorMessage  String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  affiliate Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+
+  @@index([affiliateId])
+  @@index([status])
+}
+
+enum AffiliateStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum PayoutMethod {
+  WISE
+  BANK_TRANSFER
+  PAYPAL
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// ========================
+// AI Reports
+// ========================
+
+model AIReport {
+  id                String       @id @default(uuid())
+  userId            String
+  diagnosisResultId String
+  status            ReportStatus @default(PENDING)
+  title             String
+  summary           String?
+  content           Json?
+  htmlContent       String?
+  pdfUrl            String?
+  generatedAt       DateTime?
+  regeneratedCount  Int          @default(0)
+  lastRegeneratedAt DateTime?
+  errorMessage      String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  // Relations
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  diagnosisResult DiagnosisResult @relation(fields: [diagnosisResultId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([diagnosisResultId])
+  @@index([status])
+}
+
+enum ReportStatus {
+  PENDING
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+// ========================
+// Companies
+// ========================
+
+model Company {
+  id                String        @id @default(uuid())
+  code              String        @unique
+  name              String
+  email             String
+  phone             String?
+  address           String?
+  logoUrl           String?
+  status            CompanyStatus @default(TRIAL)
+  plan              CompanyPlan   @default(FREE)
+  maxUsers          Int           @default(10)
+  currentUsers      Int           @default(0)
+  customDomain      String?
+  settings          Json?
+  contractStartDate DateTime      @default(now())
+  contractEndDate   DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  // Relations
+  users       User[]
+  admins      CompanyAdmin[]
+  invitations CompanyInvitation[]
+
+  @@index([code])
+  @@index([status])
+}
+
+model CompanyAdmin {
+  id          String               @id @default(uuid())
+  companyId   String
+  userId      String
+  role        CompanyAdminRole     @default(MANAGER)
+  permissions CompanyPermission[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  // Relations
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, userId])
+}
+
+model CompanyInvitation {
+  id         String    @id @default(uuid())
+  companyId  String
+  email      String
+  role       CompanyAdminRole @default(MANAGER)
+  invitedBy  String
+  expiresAt  DateTime
+  acceptedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([email])
+}
+
+enum CompanyStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  TRIAL
+}
+
+enum CompanyPlan {
+  FREE
+  BASIC
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum CompanyAdminRole {
+  OWNER
+  ADMIN
+  MANAGER
+}
+
+enum CompanyPermission {
+  MANAGE_USERS
+  MANAGE_DIAGNOSES
+  MANAGE_PAYMENTS
+  MANAGE_REPORTS
+  MANAGE_SETTINGS
+  VIEW_ANALYTICS
+}

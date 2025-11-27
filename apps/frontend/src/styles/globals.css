@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Colors */
+    --color-calm-beige: #F3EFE7;
+    --color-deep-navy: #1D1F24;
+    
+    /* Secondary Colors */
+    --color-warm-gray: #8A8A8A;
+    --color-sand-brown: #C5B9A3;
+    --color-soft-white: #FFFFFF;
+    
+    /* Status Colors */
+    --color-success: #47B881;
+    --color-warning: #F7C948;
+    --color-error: #EC4C47;
+    --color-info: #7089A9;
+    
+    /* Spacing */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+  }
+
+  html {
+    font-family: 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-calm-beige text-deep-navy;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-deep-navy;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  a {
+    @apply text-deep-navy transition-colors duration-hover;
+  }
+
+  a:hover {
+    @apply text-sand-brown;
+  }
+
+  ::selection {
+    @apply bg-sand-brown/30;
+  }
+}
+
+@layer components {
+  /* Button Styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-button font-medium transition-all duration-hover;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-deep-navy text-white hover:brightness-110;
+    @apply focus:ring-deep-navy;
+  }
+
+  .btn-secondary {
+    @apply btn bg-calm-beige text-deep-navy border border-sand-brown;
+    @apply hover:bg-sand-brown/20 focus:ring-sand-brown;
+  }
+
+  .btn-outline {
+    @apply btn bg-transparent text-deep-navy border-2 border-deep-navy;
+    @apply hover:bg-deep-navy hover:text-white focus:ring-deep-navy;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-deep-navy;
+    @apply hover:bg-deep-navy/10 focus:ring-deep-navy;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-8 py-4 text-lg;
+  }
+
+  /* Card Styles */
+  .card {
+    @apply bg-soft-white rounded-card shadow-card p-6;
+    @apply transition-shadow duration-hover;
+  }
+
+  .card-hover:hover {
+    @apply shadow-card-hover;
+  }
+
+  .card-lg {
+    @apply rounded-card-lg p-8;
+  }
+
+  /* Input Styles */
+  .input {
+    @apply w-full px-4 py-3 bg-white border border-sand-brown rounded-button;
+    @apply text-deep-navy placeholder-warm-gray;
+    @apply transition-all duration-hover;
+    @apply focus:outline-none focus:border-deep-navy focus:ring-2 focus:ring-deep-navy/20;
+  }
+
+  .input-error {
+    @apply border-error focus:border-error focus:ring-error/20;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-deep-navy mb-2;
+  }
+
+  .helper-text {
+    @apply text-caption text-warm-gray mt-1;
+  }
+
+  .error-text {
+    @apply text-caption text-error mt-1;
+  }
+
+  /* Container */
+  .container-narrow {
+    @apply max-w-3xl mx-auto px-4;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 tablet:px-6 desktop:px-8;
+  }
+
+  /* Section */
+  .section {
+    @apply py-12 tablet:py-16 desktop:py-20;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-caption font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning/10 text-warning;
+  }
+
+  .badge-error {
+    @apply badge bg-error/10 text-error;
+  }
+
+  .badge-info {
+    @apply badge bg-info/10 text-info;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom focus styles */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-deep-navy focus:ring-offset-2;
+  }
+}
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');

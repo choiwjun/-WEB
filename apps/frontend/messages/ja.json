@@ -1,0 +1,228 @@
+{
+  "common": {
+    "siteName": "心理診断プラットフォーム",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "retry": "再試行",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "delete": "削除",
+    "edit": "編集",
+    "close": "閉じる",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "submit": "送信",
+    "search": "検索",
+    "filter": "フィルター",
+    "sort": "並び替え",
+    "more": "もっと見る",
+    "less": "閉じる",
+    "yes": "はい",
+    "no": "いいえ"
+  },
+  "nav": {
+    "home": "ホーム",
+    "diagnosis": "診断",
+    "mypage": "マイページ",
+    "chat": "相談",
+    "login": "ログイン",
+    "register": "新規登録",
+    "logout": "ログアウト"
+  },
+  "landing": {
+    "hero": {
+      "title": "自分を深く理解する",
+      "subtitle": "専門家監修の心理診断で、あなたの可能性を発見しましょう",
+      "cta": "無料診断を始める",
+      "secondaryCta": "診断一覧を見る"
+    },
+    "features": {
+      "title": "サービスの特徴",
+      "professional": {
+        "title": "専門家監修",
+        "description": "心理学の専門家が監修した信頼性の高い診断を提供します"
+      },
+      "accurate": {
+        "title": "精密な分析",
+        "description": "科学的根拠に基づいた設問設計で、正確な診断結果をお届けします"
+      },
+      "personalized": {
+        "title": "パーソナライズ",
+        "description": "あなただけのAIレポートで、具体的なアドバイスを提供します"
+      },
+      "support": {
+        "title": "専門家サポート",
+        "description": "必要に応じて、専門のカウンセラーに相談できます"
+      }
+    },
+    "howItWorks": {
+      "title": "ご利用の流れ",
+      "step1": {
+        "title": "診断を選ぶ",
+        "description": "目的に合った診断を選択"
+      },
+      "step2": {
+        "title": "設問に回答",
+        "description": "質問に正直に答える"
+      },
+      "step3": {
+        "title": "結果を確認",
+        "description": "詳細な分析結果を受け取る"
+      },
+      "step4": {
+        "title": "活用する",
+        "description": "アドバイスを日常に活かす"
+      }
+    },
+    "testimonials": {
+      "title": "ご利用者の声"
+    },
+    "cta": {
+      "title": "今すぐ始めましょう",
+      "description": "無料診断で、新しい自分を発見してください",
+      "button": "無料で始める"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "ログイン",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "submit": "ログイン",
+      "socialLogin": "または、以下でログイン"
+    },
+    "register": {
+      "title": "新規登録",
+      "name": "お名前",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "confirmPassword": "パスワード確認",
+      "companyCode": "会社コード（お持ちの場合）",
+      "terms": "利用規約に同意します",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "submit": "登録",
+      "socialRegister": "または、以下で登録"
+    },
+    "errors": {
+      "invalidEmail": "有効なメールアドレスを入力してください",
+      "passwordTooShort": "パスワードは8文字以上である必要があります",
+      "passwordMismatch": "パスワードが一致しません",
+      "invalidCredentials": "メールアドレスまたはパスワードが正しくありません",
+      "emailExists": "このメールアドレスは既に登録されています"
+    }
+  },
+  "diagnosis": {
+    "list": {
+      "title": "診断一覧",
+      "free": "無料",
+      "paid": "有料",
+      "credits": "{credits} クレジット",
+      "time": "約{minutes}分",
+      "questions": "{count}問"
+    },
+    "detail": {
+      "startButton": "診断を始める",
+      "loginRequired": "ログインが必要です",
+      "creditRequired": "クレジットが必要です",
+      "purchaseCredits": "クレジットを購入"
+    },
+    "session": {
+      "progress": "進捗: {current}/{total}",
+      "question": "質問 {number}",
+      "required": "必須",
+      "nextQuestion": "次の質問へ",
+      "previousQuestion": "前の質問へ",
+      "submitDiagnosis": "診断を完了"
+    },
+    "result": {
+      "title": "診断結果",
+      "yourType": "あなたのタイプ",
+      "score": "スコア",
+      "analysis": "詳細分析",
+      "recommendations": "アドバイス",
+      "viewReport": "AIレポートを見る",
+      "retake": "もう一度診断する",
+      "share": "結果を共有"
+    },
+    "categories": {
+      "personality": "性格診断",
+      "psychology": "心理診断",
+      "career": "キャリア診断",
+      "relationship": "人間関係診断",
+      "stress": "ストレス診断",
+      "mental_health": "メンタルヘルス診断"
+    }
+  },
+  "mypage": {
+    "title": "マイページ",
+    "tabs": {
+      "profile": "プロフィール",
+      "history": "診断履歴",
+      "payments": "決済履歴",
+      "credits": "クレジット",
+      "settings": "設定"
+    },
+    "profile": {
+      "title": "プロフィール編集",
+      "avatar": "プロフィール画像",
+      "name": "お名前",
+      "email": "メールアドレス",
+      "nickname": "ニックネーム",
+      "save": "保存"
+    },
+    "credits": {
+      "balance": "残高",
+      "history": "利用履歴",
+      "purchase": "クレジット購入",
+      "packages": "購入プラン"
+    }
+  },
+  "chat": {
+    "title": "相談",
+    "rooms": "相談一覧",
+    "newChat": "新規相談",
+    "selectCounselor": "相談員を選ぶ",
+    "messagePlaceholder": "メッセージを入力...",
+    "send": "送信",
+    "typing": "入力中...",
+    "read": "既読",
+    "unread": "未読"
+  },
+  "payment": {
+    "title": "決済",
+    "amount": "金額",
+    "total": "合計",
+    "processing": "処理中...",
+    "success": "決済が完了しました",
+    "failed": "決済に失敗しました",
+    "retry": "もう一度試す"
+  },
+  "report": {
+    "title": "AIレポート",
+    "generating": "レポート生成中...",
+    "download": "PDFダウンロード",
+    "regenerate": "再生成"
+  },
+  "affiliate": {
+    "title": "アフィリエイト",
+    "referralCode": "紹介コード",
+    "copyCode": "コードをコピー",
+    "stats": {
+      "totalReferrals": "総紹介数",
+      "totalEarnings": "累計報酬",
+      "pendingEarnings": "未払い報酬"
+    },
+    "requestPayout": "報酬を受け取る"
+  },
+  "footer": {
+    "company": "会社情報",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "contact": "お問い合わせ",
+    "copyright": "© {year} 心理診断プラットフォーム. All rights reserved."
+  }
+}

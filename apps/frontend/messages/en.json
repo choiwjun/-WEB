@@ -1,0 +1,228 @@
+{
+  "common": {
+    "siteName": "Psychology Diagnosis Platform",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "more": "More",
+    "less": "Less",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "nav": {
+    "home": "Home",
+    "diagnosis": "Diagnosis",
+    "mypage": "My Page",
+    "chat": "Consultation",
+    "login": "Login",
+    "register": "Sign Up",
+    "logout": "Logout"
+  },
+  "landing": {
+    "hero": {
+      "title": "Understand Yourself Deeply",
+      "subtitle": "Discover your potential with expert-supervised psychological assessments",
+      "cta": "Start Free Assessment",
+      "secondaryCta": "View All Assessments"
+    },
+    "features": {
+      "title": "Our Features",
+      "professional": {
+        "title": "Expert Supervision",
+        "description": "Highly reliable assessments supervised by psychology professionals"
+      },
+      "accurate": {
+        "title": "Precise Analysis",
+        "description": "Accurate results based on scientifically designed questions"
+      },
+      "personalized": {
+        "title": "Personalized Reports",
+        "description": "AI-generated reports with specific advice tailored just for you"
+      },
+      "support": {
+        "title": "Professional Support",
+        "description": "Access to professional counselors when you need guidance"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Choose Assessment",
+        "description": "Select an assessment that fits your goals"
+      },
+      "step2": {
+        "title": "Answer Questions",
+        "description": "Respond honestly to the questions"
+      },
+      "step3": {
+        "title": "Get Results",
+        "description": "Receive detailed analysis results"
+      },
+      "step4": {
+        "title": "Apply Insights",
+        "description": "Use the advice in your daily life"
+      }
+    },
+    "testimonials": {
+      "title": "What Our Users Say"
+    },
+    "cta": {
+      "title": "Start Your Journey Today",
+      "description": "Discover a new side of yourself with our free assessment",
+      "button": "Get Started Free"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot your password?",
+      "noAccount": "Don't have an account?",
+      "submit": "Login",
+      "socialLogin": "Or login with"
+    },
+    "register": {
+      "title": "Sign Up",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "companyCode": "Company Code (if applicable)",
+      "terms": "I agree to the Terms of Service",
+      "hasAccount": "Already have an account?",
+      "submit": "Sign Up",
+      "socialRegister": "Or sign up with"
+    },
+    "errors": {
+      "invalidEmail": "Please enter a valid email address",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "This email is already registered"
+    }
+  },
+  "diagnosis": {
+    "list": {
+      "title": "Assessments",
+      "free": "Free",
+      "paid": "Paid",
+      "credits": "{credits} credits",
+      "time": "~{minutes} min",
+      "questions": "{count} questions"
+    },
+    "detail": {
+      "startButton": "Start Assessment",
+      "loginRequired": "Login required",
+      "creditRequired": "Credits required",
+      "purchaseCredits": "Purchase Credits"
+    },
+    "session": {
+      "progress": "Progress: {current}/{total}",
+      "question": "Question {number}",
+      "required": "Required",
+      "nextQuestion": "Next Question",
+      "previousQuestion": "Previous Question",
+      "submitDiagnosis": "Complete Assessment"
+    },
+    "result": {
+      "title": "Assessment Results",
+      "yourType": "Your Type",
+      "score": "Score",
+      "analysis": "Detailed Analysis",
+      "recommendations": "Recommendations",
+      "viewReport": "View AI Report",
+      "retake": "Retake Assessment",
+      "share": "Share Results"
+    },
+    "categories": {
+      "personality": "Personality",
+      "psychology": "Psychology",
+      "career": "Career",
+      "relationship": "Relationship",
+      "stress": "Stress",
+      "mental_health": "Mental Health"
+    }
+  },
+  "mypage": {
+    "title": "My Page",
+    "tabs": {
+      "profile": "Profile",
+      "history": "History",
+      "payments": "Payments",
+      "credits": "Credits",
+      "settings": "Settings"
+    },
+    "profile": {
+      "title": "Edit Profile",
+      "avatar": "Profile Picture",
+      "name": "Name",
+      "email": "Email",
+      "nickname": "Nickname",
+      "save": "Save"
+    },
+    "credits": {
+      "balance": "Balance",
+      "history": "Usage History",
+      "purchase": "Purchase Credits",
+      "packages": "Credit Packages"
+    }
+  },
+  "chat": {
+    "title": "Consultation",
+    "rooms": "Consultations",
+    "newChat": "New Consultation",
+    "selectCounselor": "Select Counselor",
+    "messagePlaceholder": "Type a message...",
+    "send": "Send",
+    "typing": "Typing...",
+    "read": "Read",
+    "unread": "Unread"
+  },
+  "payment": {
+    "title": "Payment",
+    "amount": "Amount",
+    "total": "Total",
+    "processing": "Processing...",
+    "success": "Payment completed",
+    "failed": "Payment failed",
+    "retry": "Try again"
+  },
+  "report": {
+    "title": "AI Report",
+    "generating": "Generating report...",
+    "download": "Download PDF",
+    "regenerate": "Regenerate"
+  },
+  "affiliate": {
+    "title": "Affiliate",
+    "referralCode": "Referral Code",
+    "copyCode": "Copy Code",
+    "stats": {
+      "totalReferrals": "Total Referrals",
+      "totalEarnings": "Total Earnings",
+      "pendingEarnings": "Pending Earnings"
+    },
+    "requestPayout": "Request Payout"
+  },
+  "footer": {
+    "company": "Company",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contact": "Contact Us",
+    "copyright": "© {year} Psychology Diagnosis Platform. All rights reserved."
+  }
+}

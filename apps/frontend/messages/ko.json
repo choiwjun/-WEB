@@ -1,0 +1,228 @@
+{
+  "common": {
+    "siteName": "심리진단 플랫폼",
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "retry": "다시 시도",
+    "save": "저장",
+    "cancel": "취소",
+    "confirm": "확인",
+    "delete": "삭제",
+    "edit": "편집",
+    "close": "닫기",
+    "back": "뒤로",
+    "next": "다음",
+    "previous": "이전",
+    "submit": "제출",
+    "search": "검색",
+    "filter": "필터",
+    "sort": "정렬",
+    "more": "더 보기",
+    "less": "접기",
+    "yes": "예",
+    "no": "아니오"
+  },
+  "nav": {
+    "home": "홈",
+    "diagnosis": "진단",
+    "mypage": "마이페이지",
+    "chat": "상담",
+    "login": "로그인",
+    "register": "회원가입",
+    "logout": "로그아웃"
+  },
+  "landing": {
+    "hero": {
+      "title": "나를 깊이 이해하기",
+      "subtitle": "전문가 감수 심리진단으로 당신의 가능성을 발견하세요",
+      "cta": "무료 진단 시작하기",
+      "secondaryCta": "진단 목록 보기"
+    },
+    "features": {
+      "title": "서비스 특징",
+      "professional": {
+        "title": "전문가 감수",
+        "description": "심리학 전문가가 감수한 신뢰성 높은 진단을 제공합니다"
+      },
+      "accurate": {
+        "title": "정밀한 분석",
+        "description": "과학적 근거에 기반한 설문 설계로 정확한 진단 결과를 제공합니다"
+      },
+      "personalized": {
+        "title": "맞춤형 분석",
+        "description": "당신만을 위한 AI 리포트로 구체적인 조언을 제공합니다"
+      },
+      "support": {
+        "title": "전문가 지원",
+        "description": "필요에 따라 전문 상담사와 상담할 수 있습니다"
+      }
+    },
+    "howItWorks": {
+      "title": "이용 방법",
+      "step1": {
+        "title": "진단 선택",
+        "description": "목적에 맞는 진단을 선택"
+      },
+      "step2": {
+        "title": "설문 응답",
+        "description": "질문에 솔직하게 답변"
+      },
+      "step3": {
+        "title": "결과 확인",
+        "description": "상세한 분석 결과 수령"
+      },
+      "step4": {
+        "title": "활용하기",
+        "description": "조언을 일상에 활용"
+      }
+    },
+    "testimonials": {
+      "title": "이용자 후기"
+    },
+    "cta": {
+      "title": "지금 시작하세요",
+      "description": "무료 진단으로 새로운 나를 발견하세요",
+      "button": "무료로 시작하기"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "로그인",
+      "email": "이메일",
+      "password": "비밀번호",
+      "forgotPassword": "비밀번호를 잊으셨나요?",
+      "noAccount": "계정이 없으신가요?",
+      "submit": "로그인",
+      "socialLogin": "또는 다음으로 로그인"
+    },
+    "register": {
+      "title": "회원가입",
+      "name": "이름",
+      "email": "이메일",
+      "password": "비밀번호",
+      "confirmPassword": "비밀번호 확인",
+      "companyCode": "회사 코드 (있는 경우)",
+      "terms": "이용약관에 동의합니다",
+      "hasAccount": "이미 계정이 있으신가요?",
+      "submit": "가입",
+      "socialRegister": "또는 다음으로 가입"
+    },
+    "errors": {
+      "invalidEmail": "유효한 이메일을 입력해주세요",
+      "passwordTooShort": "비밀번호는 8자 이상이어야 합니다",
+      "passwordMismatch": "비밀번호가 일치하지 않습니다",
+      "invalidCredentials": "이메일 또는 비밀번호가 올바르지 않습니다",
+      "emailExists": "이미 등록된 이메일입니다"
+    }
+  },
+  "diagnosis": {
+    "list": {
+      "title": "진단 목록",
+      "free": "무료",
+      "paid": "유료",
+      "credits": "{credits} 크레딧",
+      "time": "약 {minutes}분",
+      "questions": "{count}문항"
+    },
+    "detail": {
+      "startButton": "진단 시작하기",
+      "loginRequired": "로그인이 필요합니다",
+      "creditRequired": "크레딧이 필요합니다",
+      "purchaseCredits": "크레딧 구매"
+    },
+    "session": {
+      "progress": "진행: {current}/{total}",
+      "question": "질문 {number}",
+      "required": "필수",
+      "nextQuestion": "다음 질문",
+      "previousQuestion": "이전 질문",
+      "submitDiagnosis": "진단 완료"
+    },
+    "result": {
+      "title": "진단 결과",
+      "yourType": "당신의 유형",
+      "score": "점수",
+      "analysis": "상세 분석",
+      "recommendations": "조언",
+      "viewReport": "AI 리포트 보기",
+      "retake": "다시 진단하기",
+      "share": "결과 공유"
+    },
+    "categories": {
+      "personality": "성격 진단",
+      "psychology": "심리 진단",
+      "career": "커리어 진단",
+      "relationship": "대인관계 진단",
+      "stress": "스트레스 진단",
+      "mental_health": "정신건강 진단"
+    }
+  },
+  "mypage": {
+    "title": "마이페이지",
+    "tabs": {
+      "profile": "프로필",
+      "history": "진단 기록",
+      "payments": "결제 내역",
+      "credits": "크레딧",
+      "settings": "설정"
+    },
+    "profile": {
+      "title": "프로필 편집",
+      "avatar": "프로필 이미지",
+      "name": "이름",
+      "email": "이메일",
+      "nickname": "닉네임",
+      "save": "저장"
+    },
+    "credits": {
+      "balance": "잔액",
+      "history": "이용 내역",
+      "purchase": "크레딧 구매",
+      "packages": "구매 플랜"
+    }
+  },
+  "chat": {
+    "title": "상담",
+    "rooms": "상담 목록",
+    "newChat": "새 상담",
+    "selectCounselor": "상담사 선택",
+    "messagePlaceholder": "메시지를 입력하세요...",
+    "send": "전송",
+    "typing": "입력 중...",
+    "read": "읽음",
+    "unread": "읽지 않음"
+  },
+  "payment": {
+    "title": "결제",
+    "amount": "금액",
+    "total": "합계",
+    "processing": "처리 중...",
+    "success": "결제가 완료되었습니다",
+    "failed": "결제에 실패했습니다",
+    "retry": "다시 시도"
+  },
+  "report": {
+    "title": "AI 리포트",
+    "generating": "리포트 생성 중...",
+    "download": "PDF 다운로드",
+    "regenerate": "재생성"
+  },
+  "affiliate": {
+    "title": "제휴",
+    "referralCode": "추천 코드",
+    "copyCode": "코드 복사",
+    "stats": {
+      "totalReferrals": "총 추천 수",
+      "totalEarnings": "누적 보상",
+      "pendingEarnings": "미지급 보상"
+    },
+    "requestPayout": "보상 받기"
+  },
+  "footer": {
+    "company": "회사 정보",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "contact": "문의하기",
+    "copyright": "© {year} 심리진단 플랫폼. All rights reserved."
+  }
+}
