@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Shield, User, UserCog } from 'lucide-react';
 import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
 import { useAuthStore } from '@/store/auth';
 
@@ -23,7 +23,9 @@ export default function LoginPage() {
   const tErrors = useTranslations('auth.errors');
   const locale = useLocale();
   const router = useRouter();
-  const { login, isLoading, error, clearError } = useAuthStore();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirect');
+  const { login, demoLogin, isLoading, error, clearError } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -38,9 +40,18 @@ export default function LoginPage() {
     try {
       clearError();
       await login(data.email, data.password);
-      router.push(`/${locale}`);
+      router.push(redirectUrl || `/${locale}`);
     } catch {
       // Error is handled by the store
+    }
+  };
+
+  const handleDemoLogin = (role: 'admin' | 'user' | 'counselor') => {
+    demoLogin(role);
+    if (role === 'admin') {
+      router.push(`/${locale}/admin`);
+    } else {
+      router.push(redirectUrl || `/${locale}`);
     }
   };
 
@@ -145,6 +156,43 @@ export default function LoginPage() {
                 {useTranslations('nav')('register')}
               </Link>
             </p>
+
+            {/* Demo Login Section */}
+            <div className="mt-8 pt-6 border-t border-sand-brown/30">
+              <p className="text-center text-sm text-warm-gray mb-4">デモ用クイックログイン</p>
+              <div className="grid grid-cols-1 gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full justify-start bg-purple-50 hover:bg-purple-100 border-purple-200"
+                  onClick={() => handleDemoLogin('admin')}
+                >
+                  <Shield className="w-4 h-4 mr-2 text-purple-600" />
+                  <span className="flex-1 text-left">管理者としてログイン</span>
+                  <span className="text-xs text-purple-500">admin / admin</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full justify-start bg-blue-50 hover:bg-blue-100 border-blue-200"
+                  onClick={() => handleDemoLogin('user')}
+                >
+                  <User className="w-4 h-4 mr-2 text-blue-600" />
+                  <span className="flex-1 text-left">ユーザーとしてログイン</span>
+                  <span className="text-xs text-blue-500">user / user123</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full justify-start bg-green-50 hover:bg-green-100 border-green-200"
+                  onClick={() => handleDemoLogin('counselor')}
+                >
+                  <UserCog className="w-4 h-4 mr-2 text-green-600" />
+                  <span className="flex-1 text-left">カウンセラーとしてログイン</span>
+                  <span className="text-xs text-green-500">counselor</span>
+                </Button>
+              </div>
+            </div>
           </form>
         </CardContent>
       </Card>

@@ -19,6 +19,7 @@ interface AuthState {
   
   // Actions
   login: (email: string, password: string) => Promise<void>;
+  demoLogin: (role: 'admin' | 'user' | 'counselor') => void;
   register: (data: { email: string; password: string; name: string; companyCode?: string }) => Promise<void>;
   logout: () => void;
   loadUser: () => Promise<void>;
@@ -50,6 +51,40 @@ export const useAuthStore = create<AuthState>()(
           });
           throw error;
         }
+      },
+
+      // Demo login for testing/demonstration purposes
+      demoLogin: (role: 'admin' | 'user' | 'counselor') => {
+        const demoUsers: Record<string, User> = {
+          admin: {
+            id: 'demo-admin-001',
+            email: 'admin@shindan.com',
+            name: '管理者',
+            role: 'SUPER_ADMIN',
+            language: 'JA',
+          },
+          user: {
+            id: 'demo-user-001',
+            email: 'user@shindan.com',
+            name: 'テストユーザー',
+            role: 'USER',
+            language: 'JA',
+          },
+          counselor: {
+            id: 'demo-counselor-001',
+            email: 'counselor@shindan.com',
+            name: '田中美咲',
+            role: 'COUNSELOR',
+            language: 'JA',
+          },
+        };
+
+        set({
+          user: demoUsers[role],
+          isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        });
       },
 
       register: async (data) => {
