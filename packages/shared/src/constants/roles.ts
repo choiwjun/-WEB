@@ -2,7 +2,48 @@
  * 権限・ロール関連の定数
  */
 
-export const ROLE_PERMISSIONS = {
+// 모든 권한을 명시적으로 정의
+export const ALL_PERMISSIONS = [
+  'diagnosis:view',
+  'diagnosis:take',
+  'diagnosis:manage',
+  'profile:view',
+  'profile:edit',
+  'chat:view',
+  'chat:send',
+  'chat:manage',
+  'credit:view',
+  'credit:purchase',
+  'credit:manage',
+  'payment:view',
+  'payment:create',
+  'payment:manage',
+  'payment:refund',
+  'report:view',
+  'report:regenerate',
+  'users:view',
+  'users:view_assigned',
+  'users:manage',
+  'users:delete',
+  'counselors:view',
+  'counselors:manage',
+  'affiliate:view',
+  'affiliate:join',
+  'affiliate:manage',
+  'affiliate:payout',
+  'analytics:view',
+  'analytics:export',
+  'company:view',
+  'company:manage',
+  'company:create',
+  'company:delete',
+  'settings:view',
+  'settings:manage',
+] as const;
+
+export type Permission = (typeof ALL_PERMISSIONS)[number];
+
+export const ROLE_PERMISSIONS: Record<string, readonly Permission[]> = {
   user: [
     'diagnosis:view',
     'diagnosis:take',
@@ -87,28 +128,31 @@ export const ROLE_PERMISSIONS = {
     'settings:view',
     'settings:manage',
   ],
-} as const;
+};
 
-export type Permission = (typeof ROLE_PERMISSIONS)[keyof typeof ROLE_PERMISSIONS][number];
+export type RoleKey = keyof typeof ROLE_PERMISSIONS;
 
-export const ROLE_HIERARCHY = {
+export const ROLE_HIERARCHY: Record<string, number> = {
   user: 1,
   counselor: 2,
   admin: 3,
   super_admin: 4,
-} as const;
+};
 
 export const hasPermission = (
-  userRole: keyof typeof ROLE_PERMISSIONS,
+  userRole: string,
   permission: Permission
 ): boolean => {
-  const permissions = ROLE_PERMISSIONS[userRole] as readonly string[];
-  return permissions?.includes(permission) ?? false;
+  const permissions = ROLE_PERMISSIONS[userRole];
+  if (!permissions) return false;
+  return permissions.includes(permission);
 };
 
 export const hasMinimumRole = (
-  userRole: keyof typeof ROLE_HIERARCHY,
-  requiredRole: keyof typeof ROLE_HIERARCHY
+  userRole: string,
+  requiredRole: string
 ): boolean => {
-  return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[requiredRole];
+  const userLevel = ROLE_HIERARCHY[userRole] ?? 0;
+  const requiredLevel = ROLE_HIERARCHY[requiredRole] ?? 0;
+  return userLevel >= requiredLevel;
 };
